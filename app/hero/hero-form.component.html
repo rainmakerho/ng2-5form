@@ -1,0 +1,105 @@
+<div class="container">
+    <h1>Hero Form</h1>
+    <div [hidden]="submitted">
+    <form *ngIf="active" (ngSubmit)="onSubmit()" #heroForm="ngForm">
+        <div class="form-group"
+            [class.has-error]="name.invalid && name.touched">
+            <label for="name" class="control-label">Name</label>
+
+            <input type="text" id="name" class="form-control" 
+            required 
+            [(ngModel)]="model.name" name="name"
+            #spyName 
+            #name="ngModel">
+            <span>{{spyName.className}}</span>
+            <span>{{name.valid}}</span>
+            <div [hidden]="name.valid || name.pristine" 
+             class="alert alert-danger">
+                Name is required
+            </div>
+            TODO: remove this: {{model.name}}<br>
+           
+        </div>
+
+        <div class="form-group">
+            <label for="alterEgo" class="control-label">Alter Ego</label>
+            <input type="text" id="alterEgo" class="form-control" 
+             [(ngModel)]="model.alterEgo" name="alterEgo"
+             #alterEgo="ngModel">
+        </div>
+        
+        <div class="form-group"
+            [class.has-error]="power.invalid && power.touched">
+            >
+            <label for="power" class="control-label">Hero Power</label>
+            <select id="power" class="form-control" required
+             [(ngModel)]="model.power" name="power"
+              #power="ngModel">
+                <option value="">Select Powers ...</option>
+                <option *ngFor="let p of powers" [value]="p">{{p}}</option>
+            </select>
+            <div [hidden]="power.valid || power.pristine" 
+             class="alert alert-danger">
+                Power is required
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-default" (click)="newHero()">New Hero</button>
+        <button type="submit" class="btn btn-primary"[disabled]="!heroForm.form.valid">
+            Submit
+        </button>
+
+        <br>
+        Component Model:{{ model | json }}
+        <br>
+        Angular Form:{{ heroForm.value | json }}
+    </form>
+    </div>
+
+    <div>
+        <form #frmBinding="ngForm">
+             <input type="text" name="noBinding" ngModel >
+             <br/>
+             <input type="text" name="oneWayBinding" [ngModel]="model.name" >
+             <br/>
+             <input type="text" name="twoWayBinding" [(ngModel)]="model.name" >
+        </form>
+        <p>
+            {{ frmBinding.value | json }}
+        </p>
+    </div>
+    <div [hidden]="!submitted">
+        <h2>Your submitted the flowing:</h2>
+        <div class="row">
+            <div class="col-xs-3">
+                Name
+            </div>
+            <div class="col-xs-9 pull-left">
+                {{ model.name }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+                Alter Ego
+            </div>
+            <div class="col-xs-9">
+                {{ model.alterEgo }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+                Power
+            </div>
+             <div class="col-xs-9">
+                {{ model.power }}
+            </div>
+        </div>
+        <button class="btn btn-primary"
+            (click)="submitted=false"
+        >
+            Edit
+        </button>
+    </div>
+</div>
+
+
